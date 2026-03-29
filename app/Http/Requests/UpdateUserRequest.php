@@ -15,7 +15,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $this->route('user'),
+            'email' => 'sometimes|email|unique:users,email,' . $this->route('id'),
             'password' => 'sometimes|string|min:6',
             'bio' => 'nullable|string|max:1000',
         ];

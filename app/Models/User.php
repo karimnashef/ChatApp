@@ -7,8 +7,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-// Relations
 use App\Models\Chat;
 use App\Models\Message;
 use App\Models\Post;
@@ -25,6 +23,7 @@ class User extends Authenticatable
         'password',
         'bio',
         'key',
+        'role',
         'telegram_chat_id',
         'ip'
     ];

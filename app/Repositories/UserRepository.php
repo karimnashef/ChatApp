@@ -56,6 +56,15 @@ class UserRepository
         }
         return null;
     }
+    public function forceDelete($id)
+    {
+        $user = $this->model->withTrashed()->find($id);
+        if ($user) {
+            $user->forceDelete();
+            return true;
+        }
+        return false;
+    }
 }
 
 ?>

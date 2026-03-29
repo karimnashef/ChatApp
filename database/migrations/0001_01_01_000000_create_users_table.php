@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('key')->nullable();
             $table->string('bio')->nullable();
+            $table->enum('role', [UserRole::USER->value, UserRole::ADMIN->value])->default(UserRole::USER->value);
             $table->string('telegram_chat_id')->nullable();
             $table->string('ip')->default('0.0.0.0');
             $table->softDeletes();
