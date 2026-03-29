@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     public function __construct(
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private UserService $userService
     ) {}
 
     public function index()
@@ -25,23 +27,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|string|min:6|confirmed',
-        ]);
+        $response = $this->userService->update($id, $request->validated());
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $user = $this->userRepository->find($id);
-
-        if ($request->has('name')) {
-            $user->name = $request->name;
-        }
+        return response()->json($response);
+        $user = $this->userRepository->find($id);}
 
         if ($request->has('email')) {
             $user->email = $request->email;
