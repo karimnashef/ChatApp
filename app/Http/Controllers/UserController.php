@@ -25,17 +25,19 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $id,
             'password' => 'sometimes|string|min:6|confirmed',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
+        $user = $this->userRepository->find($id);
 
         if ($request->has('name')) {
             $user->name = $request->name;
@@ -54,8 +56,9 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function destroy(User $user)
+    public function destroy(string $id)
     {
+        $user = $this->userRepository->find($id);
         $user->delete();
         return response()->json(['message' => 'User deleted'], 200);
     }
